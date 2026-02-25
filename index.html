@@ -18,14 +18,14 @@
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
-        body { font-family: 'Pretendard', sans-serif; background-color: var(--bg); color: var(--text); overflow-x: hidden; }
+        body { font-family: 'Pretendard', sans-serif; background-color: var(--bg); color: var(--text); overflow-x: hidden; line-height: 1.5; }
 
         /* 로딩 화면 */
         #loader { position: fixed; inset: 0; background: #fff; z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center; }
         .spinner { width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* 상단 헤더 */
+        /* 헤더 */
         header { 
             position: sticky; top: 0; background: rgba(255,255,255,0.8); 
             backdrop-filter: blur(10px); z-index: 100; padding: 15px 20px;
@@ -33,31 +33,33 @@
         }
         header h1 { font-size: 18px; font-weight: 800; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-        /* 검색 바 전용 */
+        /* 검색 영역 */
         .search-container { padding: 15px; background: var(--surface); border-bottom: 1px solid var(--border); }
         .search-box { position: relative; }
-        .search-input { width: 100%; padding: 12px 15px 12px 40px; border-radius: 12px; border: 2px solid var(--border); font-size: 15px; font-family: inherit; font-weight: 600; outline: none; }
-        .search-input:focus { border-color: var(--primary); }
+        .search-input { width: 100%; padding: 12px 15px 12px 40px; border-radius: 12px; border: 2px solid var(--border); font-size: 15px; font-family: inherit; font-weight: 600; outline: none; transition: all 0.2s; }
+        .search-input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1); }
         .search-icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
 
         /* 자동완성 */
-        .ac-list { position: absolute; top: 100%; left: 0; right: 0; background: #fff; border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); z-index: 1000; max-height: 250px; overflow-y: auto; display: none; margin-top: 5px; border: 1px solid var(--border); }
-        .ac-item { padding: 12px 15px; border-bottom: 1px solid var(--border); font-size: 14px; font-weight: 600; }
+        .ac-list { position: absolute; top: calc(100% + 5px); left: 0; right: 0; background: #fff; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); z-index: 1000; max-height: 250px; overflow-y: auto; display: none; border: 1px solid var(--border); }
+        .ac-item { padding: 12px 15px; border-bottom: 1px solid var(--border); font-size: 14px; font-weight: 600; cursor: pointer; }
+        .ac-item:active { background: var(--accent-bg); }
         .ac-item:last-child { border-bottom: none; }
 
-        /* 메인 영역 */
+        /* 메인 콘텐츠 */
         main { padding: 15px; padding-bottom: 100px; min-height: 80vh; }
 
         /* 카드 UI */
         .card { background: var(--surface); border-radius: 16px; padding: 16px; margin-bottom: 12px; border: 1px solid var(--border); box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-        .card-label { font-size: 11px; font-weight: 800; color: var(--primary); margin-bottom: 4px; text-transform: uppercase; }
-        .card-title { font-size: 17px; font-weight: 800; margin-bottom: 10px; }
-        .card-info { background: var(--bg); border-radius: 10px; padding: 12px; font-size: 14px; font-weight: 600; }
-        .card-info div { margin-bottom: 5px; }
+        .card-label { font-size: 11px; font-weight: 800; color: var(--primary); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .card-title { font-size: 17px; font-weight: 800; margin-bottom: 10px; color: var(--text); }
+        .card-info { background: var(--bg); border-radius: 10px; padding: 12px; font-size: 14px; font-weight: 600; color: var(--text-muted); }
+        .card-info b { color: var(--text); }
+        .card-info div { margin-bottom: 4px; }
         .card-info div:last-child { margin-bottom: 0; }
 
         /* 배지 */
-        .badge { display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; background: #eee; margin-right: 5px; }
+        .badge { display: inline-block; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; background: #f1f5f9; color: #475569; margin: 2px; }
 
         /* 하단 네비게이션 */
         nav { 
@@ -65,21 +67,20 @@
             border-top: 1px solid var(--border); display: flex; height: 65px; 
             padding-bottom: env(safe-area-inset-bottom); z-index: 1000;
         }
-        .nav-btn { flex: 1; border: none; background: none; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: var(--text-muted); font-size: 10px; font-weight: 700; }
+        .nav-btn { flex: 1; border: none; background: none; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: var(--text-muted); font-size: 10px; font-weight: 700; cursor: pointer; }
         .nav-btn.active { color: var(--primary); }
         .nav-btn span { font-size: 20px; }
 
-        /* 탭별 특수 UI */
-        .select-full { width: 100%; padding: 12px; border-radius: 10px; border: 2px solid var(--border); font-weight: 700; margin-bottom: 15px; background: #fff; }
-        .roster-list-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); }
+        /* 선택박스 및 명렬 리스트 */
+        .select-full { width: 100%; padding: 14px; border-radius: 12px; border: 2px solid var(--border); font-weight: 700; margin-bottom: 15px; background: #fff; font-size: 15px; appearance: none; }
+        .roster-list-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border); }
         .roster-list-item:last-child { border-bottom: none; }
 
         @media print {
             .no-print { display: none !important; }
             main { padding: 0; margin: 0; }
-            .print-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-            .print-table th, .print-table td { border: 1px solid #000; padding: 8px; text-align: center; font-size: 12px; }
-            .print-table th { background: #f0f0f0; }
+            header, nav, .search-container { display: none; }
+            .card { border: 1px solid #000; box-shadow: none; border-radius: 0; }
         }
     </style>
 </head>
@@ -92,13 +93,13 @@
 
 <header>
     <h1>학생 선택과목</h1>
-    <button class="no-print" style="background:var(--accent-bg); border:none; padding:6px 12px; border-radius:8px; font-weight:700; font-size:12px; color:var(--primary);" onclick="location.reload()">새로고침</button>
+    <button class="no-print" style="background:var(--accent-bg); border:none; padding:8px 14px; border-radius:8px; font-weight:700; font-size:12px; color:var(--primary);" onclick="location.reload()">새로고침</button>
 </header>
 
 <div id="searchArea" class="search-container no-print">
     <div class="search-box">
         <span class="search-icon">🔍</span>
-        <input type="text" id="searchInput" class="search-input" placeholder="이름 또는 학번 입력" oninput="handleSearch(this.value)">
+        <input type="text" id="searchInput" class="search-input" placeholder="이름 또는 학번 입력" autocomplete="off" oninput="handleSearch(this.value)">
         <div id="acList" class="ac-list"></div>
     </div>
 </div>
@@ -117,44 +118,54 @@
     let allStudents = [], classroomData = [], dataCount = 0;
     const TOTAL_SHEETS = 4;
 
-    /* 데이터 파싱 로직 (기존 유지하되 모바일에 최적화) */
+    /* 데이터 파싱: 학생 정보 */
     function parseStudent(data, grade) {
         if(!data.table) return;
-        const headers = data.table.cols.map(c => c.label.trim());
+        const headers = data.table.cols.map(c => (c.label || '').trim());
         data.table.rows.forEach(row => {
-            const id = row.c[0]?.f || row.c[0]?.v || '';
-            const name = row.c[1]?.v || '';
+            const id = (row.c[0]?.f || row.c[0]?.v || '').toString().trim();
+            const name = (row.c[1]?.v || '').toString().trim();
             if(!id || !name) return;
+            
             let subjects = {};
             row.c.forEach((cell, i) => {
-                if(i > 1 && cell?.v) subjects[headers[i]] = String(cell.v).trim();
+                if(i > 1 && cell?.v) {
+                    const headerName = headers[i];
+                    subjects[headerName] = cell.v.toString().trim();
+                }
             });
-            allStudents.push({ id, name, grade, homeroom: `${id.substring(0,1)}학년 ${parseInt(id.substring(1,3))}반`, subjects });
+            allStudents.push({ 
+                id, name, grade, 
+                homeroom: `${id.substring(0,1)}학년 ${parseInt(id.substring(1,3))}반`, 
+                subjects 
+            });
         });
     }
 
+    /* 데이터 파싱: 강의실 정보 */
     function parseClassroom(data, grade) {
         if(!data.table) return;
         const cols = data.table.cols;
         const rows = data.table.rows;
-        let subjects = [];
-        for(let j=2; j<cols.length; j++) if(cols[j].label) subjects[j] = cols[j].label;
+        let subjectsHeaders = [];
+        for(let j=2; j<cols.length; j++) if(cols[j].label) subjectsHeaders[j] = cols[j].label.trim();
 
         let curSlot = '';
         rows.forEach(r => {
-            const colA = r.c[0]?.v || '';
-            const colB = r.c[1]?.v || '';
+            const colA = (r.c[0]?.v || '').toString().trim();
+            const colB = (r.c[1]?.v || '').toString().trim();
+            
             if(colB === '학생수' && colA) curSlot = colA;
             if(!curSlot) return;
             
             for(let j=2; j<r.c.length; j++) {
-                const val = r.c[j]?.f || r.c[j]?.v || '';
-                const subj = subjects[j];
-                if(!subj) continue;
+                const val = (r.c[j]?.f || r.c[j]?.v || '').toString().trim();
+                const subjName = subjectsHeaders[j];
+                if(!subjName) continue;
                 
-                let entry = classroomData.find(x => x.grade === grade && x.slot === curSlot && x.subject === subj);
+                let entry = classroomData.find(x => x.grade === grade && x.slot === curSlot && x.subject === subjName);
                 if(!entry) {
-                    entry = { grade, slot: curSlot, subject: subj, teacher:'', room:'', count:0 };
+                    entry = { grade, slot: curSlot, subject: subjName, teacher:'', room:'', count:0 };
                     classroomData.push(entry);
                 }
                 if(colB === '학생수') entry.count = val;
@@ -164,7 +175,7 @@
         });
     }
 
-    /* 콜백 함수들 */
+    /* Google Sheets JSONP 콜백 */
     window.cb_g2_stu = d => { parseStudent(d, '2학년'); checkReady(); };
     window.cb_g3_stu = d => { parseStudent(d, '3학년'); checkReady(); };
     window.cb_g2_cls = d => { parseClassroom(d, '2학년'); checkReady(); };
@@ -190,26 +201,27 @@
         });
     })();
 
-    /* UI 로직 */
+    /* 탭 전환 */
     let currentTab = 'student';
     function switchTab(tab, btn) {
         currentTab = tab;
         document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         document.getElementById('searchArea').style.display = (tab === 'student' || tab === 'location') ? 'block' : 'none';
+        document.getElementById('searchInput').value = '';
         render();
     }
 
     function render() {
         const container = document.getElementById('content');
         container.innerHTML = '';
-        if(currentTab === 'student') container.innerHTML = '<div style="text-align:center; padding:40px; color:#94a3b8; font-weight:700;">상단 검색창에 학생 이름 또는 학번을 입력하세요.</div>';
+        if(currentTab === 'student') container.innerHTML = '<div style="text-align:center; padding:60px 20px; color:#94a3b8; font-weight:700;">학생 이름 또는 학번을 입력하여<br>수업 장소를 확인하세요.</div>';
         if(currentTab === 'roster') renderRoster(container);
-        if(currentTab === 'location') container.innerHTML = '<div style="text-align:center; padding:40px; color:#94a3b8; font-weight:700;">교사, 과목, 교실 등을 검색하세요.</div>';
+        if(currentTab === 'location') container.innerHTML = '<div style="text-align:center; padding:60px 20px; color:#94a3b8; font-weight:700;">담당 교사명, 과목명 또는<br>교실 이름을 검색하세요.</div>';
         if(currentTab === 'classprint') renderClassPrint(container);
     }
 
-    /* 검색 처리 */
+    /* 검색 엔진 */
     function handleSearch(val) {
         val = val.trim().toLowerCase();
         const ac = document.getElementById('acList');
@@ -217,41 +229,50 @@
 
         if(currentTab === 'student') {
             const matches = allStudents.filter(s => s.name.includes(val) || s.id.includes(val)).slice(0, 10);
-            ac.innerHTML = matches.map(m => `<div class="ac-item" onclick="selectStudent('${m.id}')"><b>${m.name}</b> (${m.id}) <small style="color:#999">${m.homeroom}</small></div>`).join('');
+            ac.innerHTML = matches.map(m => `<div class="ac-item" onclick="selectStudent('${m.id}')"><b>${m.name}</b> (${m.id}) <small style="color:#94a3b8; margin-left:5px;">${m.homeroom}</small></div>`).join('');
             ac.style.display = matches.length ? 'block' : 'none';
         } else if(currentTab === 'location') {
             doLocationSearch(val);
         }
     }
 
-    /* 학생 상세 조회 */
+    /* 학생 개별 결과 표시 */
     function selectStudent(id) {
         const s = allStudents.find(x => x.id === id);
+        if(!s) return;
         document.getElementById('acList').style.display = 'none';
         document.getElementById('searchInput').value = s.name;
         
         const container = document.getElementById('content');
-        let html = `<div style="margin-bottom:20px;">
-            <div style="font-size:22px; font-weight:900;">${s.name}</div>
-            <div style="color:var(--text-muted); font-weight:700;">${s.homeroom} · ${s.id}</div>
+        let html = `<div style="margin: 10px 0 20px 5px;">
+            <div style="font-size:24px; font-weight:900; letter-spacing:-0.5px;">${s.name}</div>
+            <div style="color:var(--text-muted); font-weight:700; font-size:15px;">${s.homeroom} · ${s.id}</div>
         </div>`;
         
-        Object.entries(s.subjects).forEach(([subj, slot]) => {
-            const cls = classroomData.find(c => c.grade === s.grade && c.slot === slot && c.subject === subj);
+        // s.subjects 구조에 따라 유연하게 대응
+        Object.entries(s.subjects).forEach(([key, value]) => {
+            // key가 과목이고 value가 슬롯인 경우와 반대 경우 모두 검색
+            const cls = classroomData.find(c => 
+                c.grade === s.grade && 
+                ((c.slot === value && c.subject === key) || (c.slot === key && c.subject === value))
+            );
+            
+            if(!cls) return;
+
             html += `
             <div class="card">
-                <div class="card-label">SLOT ${slot}</div>
-                <div class="card-title">${subj}</div>
+                <div class="card-label">SLOT ${cls.slot}</div>
+                <div class="card-title">${cls.subject}</div>
                 <div class="card-info">
-                    <div>🧑‍🏫 담당교사: ${cls?.teacher || '정보 없음'}</div>
-                    <div style="color:var(--primary)">📍 수업장소: <b>${cls?.room || '정보 없음'}</b></div>
+                    <div>🧑‍🏫 담당교사: <b>${cls.teacher || '미정'}</b></div>
+                    <div style="color:var(--primary); font-size:15px; margin-top:6px;">📍 수업장소: <b>${cls.room || '정보 없음'}</b></div>
                 </div>
             </div>`;
         });
         container.innerHTML = html;
     }
 
-    /* 장소/교사 통합 검색 */
+    /* 교사/장소 검색 */
     function doLocationSearch(q) {
         document.getElementById('acList').style.display = 'none';
         const container = document.getElementById('content');
@@ -270,67 +291,102 @@
                 <div class="card-info">
                     <div>🧑‍🏫 담당: <b>${r.teacher}</b></div>
                     <div>📍 장소: <b style="color:var(--secondary)">${r.room}</b></div>
-                    <div style="font-size:12px; color:#999;">👥 수강생: ${r.count}명</div>
+                    <div style="font-size:12px; color:#94a3b8; margin-top:5px;">👥 수강 인원: ${r.count}명</div>
                 </div>
             </div>
         `).join('');
     }
 
-    /* 명렬표 탭 */
+    /* 명렬표 로직 */
     function renderRoster(container) {
-        const options = [...new Set(classroomData.map(c => `[${c.grade}] ${c.slot} - ${c.subject}`))].sort();
+        // 중복 제거된 강좌 목록 생성
+        const options = classroomData
+            .map(c => ({ 
+                display: `[${c.grade}] ${c.slot} - ${c.subject} (${c.teacher})`,
+                grade: c.grade, slot: c.slot, subject: c.subject
+            }))
+            .sort((a,b) => a.display.localeCompare(b.display));
+
         container.innerHTML = `
-            <select id="rosterSel" class="select-full" onchange="showRoster(this.value)">
-                <option value="">강좌를 선택하세요</option>
-                ${options.map(o => `<option value="${o}">${o}</option>`).join('')}
-            </select>
+            <div style="position:relative;">
+                <select id="rosterSel" class="select-full" onchange="showRoster(this)">
+                    <option value="">강좌를 선택하세요</option>
+                    ${options.map(o => `<option value='${JSON.stringify(o)}'>${o.display}</option>`).join('')}
+                </select>
+                <div style="position:absolute; right:15px; top:18px; pointer-events:none; color:var(--text-muted);">▼</div>
+            </div>
             <div id="rosterResult"></div>
         `;
     }
 
-    window.showRoster = (val) => {
-        if(!val) return;
-        const [full, grade, slot, subj] = val.match(/\[(.*?)\] (.*?) - (.*)/);
-        const sts = allStudents.filter(s => s.grade === grade && s.subjects[subj] === slot).sort((a,b)=>a.id.localeCompare(b.id));
-        const cls = classroomData.find(c => c.grade === grade && c.slot === slot && c.subject === subj);
+    window.showRoster = (el) => {
+        if(!el.value) return;
+        const config = JSON.parse(el.value);
+        const { grade, slot, subject } = config;
+
+        // 해당 강좌 수강생 찾기
+        const sts = allStudents.filter(s => {
+            if(s.grade !== grade) return false;
+            // 과목명이 키일 때 혹은 슬롯이 키일 때 모두 대응
+            return (s.subjects[subject] === slot || s.subjects[slot] === subject);
+        }).sort((a,b) => a.id.localeCompare(b.id));
+
+        const cls = classroomData.find(c => c.grade === grade && c.slot === slot && c.subject === subject);
         
         document.getElementById('rosterResult').innerHTML = `
-            <div style="margin:10px 0; font-weight:800; color:var(--primary);">총 ${sts.length}명 (${cls.teacher} / ${cls.room})</div>
-            <div class="card">
-                ${sts.map((s, i) => `
-                    <div class="roster-list-item">
-                        <span style="font-size:13px; color:#999; width:25px;">${i+1}</span>
-                        <span style="font-weight:700; flex:1;">${s.name}</span>
-                        <span style="font-family:monospace; color:var(--text-muted);">${s.id}</span>
-                    </div>
-                `).join('')}
+            <div style="margin:10px 0 15px 5px;">
+                <div style="font-weight:800; color:var(--primary); font-size:18px;">${subject}</div>
+                <div style="font-size:14px; color:var(--text-muted); font-weight:600;">
+                    ${cls.teacher} 선생님 | ${cls.room} | 총 ${sts.length}명
+                </div>
             </div>
-            <button class="select-full" style="background:var(--bg); border:1px solid var(--border);" onclick="window.print()">🖨️ 인쇄용 출석부 생성</button>
+            <div class="card" style="padding: 5px 16px;">
+                ${sts.length > 0 ? sts.map((s, i) => `
+                    <div class="roster-list-item">
+                        <span style="font-size:12px; color:#cbd5e1; width:25px; font-weight:800;">${(i+1).toString().padStart(2,'0')}</span>
+                        <span style="font-weight:700; flex:1; font-size:15px;">${s.name}</span>
+                        <span style="font-family:monospace; color:var(--text-muted); font-size:14px;">${s.id}</span>
+                    </div>
+                `).join('') : '<div style="padding:20px; text-align:center; color:#999;">수강생 데이터가 없습니다.</div>'}
+            </div>
+            <button class="select-full" style="background:var(--text); color:#fff; border:none; margin-top:10px;" onclick="window.print()">🖨️ 명렬표 인쇄하기</button>
         `;
     };
 
-    /* 학급별 탭 */
+    /* 학급별 로직 */
     function renderClassPrint(container) {
         const rooms = [...new Set(allStudents.map(s => s.homeroom))].sort();
         container.innerHTML = `
-            <select id="hrSel" class="select-full" onchange="showHR(this.value)">
-                <option value="">학급 선택</option>
-                ${rooms.map(r => `<option value="${r}">${r}</option>`).join('')}
-            </select>
+            <div style="position:relative;">
+                <select id="hrSel" class="select-full" onchange="showHR(this.value)">
+                    <option value="">학급을 선택하세요</option>
+                    ${rooms.map(r => `<option value="${r}">${r}</option>`).join('')}
+                </select>
+                <div style="position:absolute; right:15px; top:18px; pointer-events:none; color:var(--text-muted);">▼</div>
+            </div>
             <div id="hrResult"></div>
         `;
     }
 
     window.showHR = (hr) => {
-        const sts = allStudents.filter(s => s.homeroom === hr).sort((a,b)=>a.id.localeCompare(b.id));
-        let html = `<div style="margin-bottom:15px; font-weight:800;">${hr} 학생 목록 (${sts.length}명)</div>`;
+        if(!hr) return;
+        const sts = allStudents.filter(s => s.homeroom === hr).sort((a,b) => a.id.localeCompare(b.id));
+        let html = `<div style="margin:5px 0 15px 5px; font-weight:800; font-size:17px;">${hr} (${sts.length}명)</div>`;
         
         sts.forEach(s => {
             html += `
             <div class="card" onclick="selectStudent('${s.id}')">
-                <div style="font-weight:800; font-size:16px; margin-bottom:8px;">${s.name} (${s.id})</div>
-                <div style="display:flex; flex-wrap:wrap; gap:5px;">
-                    ${Object.entries(s.subjects).map(([subj, slot]) => `<span class="badge">${slot}: ${subj}</span>`).join('')}
+                <div style="font-weight:800; font-size:16px; margin-bottom:8px; display:flex; justify-content:space-between;">
+                    <span>${s.name}</span>
+                    <span style="color:var(--text-muted); font-size:14px;">${s.id}</span>
+                </div>
+                <div style="display:flex; flex-wrap:wrap; gap:4px;">
+                    ${Object.entries(s.subjects).map(([k, v]) => {
+                        // 슬롯 번호 찾기 (숫자 형태인 것)
+                        const slot = isNaN(k) ? v : k;
+                        const name = isNaN(k) ? k : v;
+                        return `<span class="badge">S${slot}: ${name}</span>`;
+                    }).join('')}
                 </div>
             </div>`;
         });

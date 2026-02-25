@@ -297,20 +297,26 @@
         `).join('');
     }
 
-    /* 명렬표 로직 */
+    /* 명렬표 로직 (담당 교사가 있는 강좌만 표시하도록 수정) */
     function renderRoster(container) {
-        // 중복 제거된 강좌 목록 생성
+        // 1. 담당 교사(teacher) 정보가 있는 강좌만 필터링
         const options = classroomData
+            .filter(c => c.teacher && c.teacher.trim() !== "" && c.teacher !== "0") 
             .map(c => ({ 
                 display: `[${c.grade}] ${c.slot} - ${c.subject} (${c.teacher})`,
                 grade: c.grade, slot: c.slot, subject: c.subject
             }))
-            .sort((a,b) => a.display.localeCompare(b.display));
+            .sort((a, b) => a.display.localeCompare(b.display));
+
+        if (options.length === 0) {
+            container.innerHTML = '<div style="text-align:center; padding:40px; color:var(--text-muted);">개설된 강좌 정보가 없습니다.</div>';
+            return;
+        }
 
         container.innerHTML = `
             <div style="position:relative;">
                 <select id="rosterSel" class="select-full" onchange="showRoster(this)">
-                    <option value="">강좌를 선택하세요</option>
+                    <option value="">강좌를 선택하세요 (${options.length}개)</option>
                     ${options.map(o => `<option value='${JSON.stringify(o)}'>${o.display}</option>`).join('')}
                 </select>
                 <div style="position:absolute; right:15px; top:18px; pointer-events:none; color:var(--text-muted);">▼</div>
@@ -395,4 +401,5 @@
 
 </script>
 </body>
+
 </html>

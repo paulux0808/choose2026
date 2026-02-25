@@ -249,9 +249,7 @@
             <div style="color:var(--text-muted); font-weight:700; font-size:15px;">${s.homeroom} · ${s.id}</div>
         </div>`;
         
-        // s.subjects 구조에 따라 유연하게 대응
         Object.entries(s.subjects).forEach(([key, value]) => {
-            // key가 과목이고 value가 슬롯인 경우와 반대 경우 모두 검색
             const cls = classroomData.find(c => 
                 c.grade === s.grade && 
                 ((c.slot === value && c.subject === key) || (c.slot === key && c.subject === value))
@@ -297,21 +295,15 @@
         `).join('');
     }
 
-    /* 명렬표 로직 (담당 교사가 있는 강좌만 표시하도록 수정) */
+    /* 명렬표 로직: 담당 교사가 있는 강좌만 필터링 */
     function renderRoster(container) {
-        // 1. 담당 교사(teacher) 정보가 있는 강좌만 필터링
         const options = classroomData
-            .filter(c => c.teacher && c.teacher.trim() !== "" && c.teacher !== "0") 
+            .filter(c => c.teacher && c.teacher.trim() !== "" && c.teacher !== "0") // 교사 정보가 있는 것만
             .map(c => ({ 
                 display: `[${c.grade}] ${c.slot} - ${c.subject} (${c.teacher})`,
                 grade: c.grade, slot: c.slot, subject: c.subject
             }))
-            .sort((a, b) => a.display.localeCompare(b.display));
-
-        if (options.length === 0) {
-            container.innerHTML = '<div style="text-align:center; padding:40px; color:var(--text-muted);">개설된 강좌 정보가 없습니다.</div>';
-            return;
-        }
+            .sort((a,b) => a.display.localeCompare(b.display));
 
         container.innerHTML = `
             <div style="position:relative;">
@@ -330,10 +322,8 @@
         const config = JSON.parse(el.value);
         const { grade, slot, subject } = config;
 
-        // 해당 강좌 수강생 찾기
         const sts = allStudents.filter(s => {
             if(s.grade !== grade) return false;
-            // 과목명이 키일 때 혹은 슬롯이 키일 때 모두 대응
             return (s.subjects[subject] === slot || s.subjects[slot] === subject);
         }).sort((a,b) => a.id.localeCompare(b.id));
 
@@ -388,7 +378,6 @@
                 </div>
                 <div style="display:flex; flex-wrap:wrap; gap:4px;">
                     ${Object.entries(s.subjects).map(([k, v]) => {
-                        // 슬롯 번호 찾기 (숫자 형태인 것)
                         const slot = isNaN(k) ? v : k;
                         const name = isNaN(k) ? k : v;
                         return `<span class="badge">S${slot}: ${name}</span>`;
@@ -398,8 +387,6 @@
         });
         document.getElementById('hrResult').innerHTML = html;
     };
-
 </script>
 </body>
-
 </html>
